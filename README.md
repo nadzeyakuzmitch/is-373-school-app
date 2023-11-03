@@ -1,4 +1,4 @@
-# Flask School Database App
+# Flask School Database App (IS 373)
 
 Used seeder library:
 [Flask Seeder](https://pypi.org/project/Flask-Seeder/)
@@ -11,6 +11,7 @@ pip install Flask
 pip install flask-sqlalchemy
 pip install Flask-Migrate
 pip install Flask-Seeder
+pip install pytest
 
 ```
 
@@ -29,9 +30,9 @@ exit()
 
 ```bash
 
-python -m flask --app school-app db init
-python -m flask --app school-app db migrate -m "Initial migration"
-python -m flask --app school-app db upgrade
+python -m flask --app school db init
+python -m flask --app school db migrate -m "Initial migration"
+python -m flask --app school db upgrade
 
 ```
 
@@ -39,8 +40,8 @@ python -m flask --app school-app db upgrade
 
 ```bash
 
-python -m flask --app school-app db migrate -m "New migration"
-python -m flask --app school-app db upgrade
+python -m flask --app school db migrate -m "New migration"
+python -m flask --app school db upgrade
 
 ```
 
@@ -48,10 +49,18 @@ python -m flask --app school-app db upgrade
           
 ```bash
 
-python -m flask --app school-app run
+python -m flask --app school run
 
 ```
 
 ### 5. Navigate to see seeded list of students
           
 [Localhost Page](http://127.0.0.1:5000/)
+
+### 6. Run unit tests
+          
+```bash
+
+python -m pytest
+
+```

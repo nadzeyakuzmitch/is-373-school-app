@@ -5,5 +5,6 @@ Flask-Seeder
 flask-sqlalchemy
 itsdangerous
 Jinja2
-MarkupSafe=
+MarkupSafe
+pytest
 Werkzeug
