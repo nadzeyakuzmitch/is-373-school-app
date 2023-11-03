@@ -1,6 +1,7 @@
 from flask import Flask, Blueprint, render_template
 from flask_migrate import Migrate, migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_seeder import FlaskSeeder, Seeder, Faker, generator
 
 def create_app():
     app = Flask(__name__)
@@ -17,6 +18,9 @@ def create_app():
     # This initializes settings for migrations
     migrate = Migrate(app, db)
 
+    # This initializes seeder for our app
+    seeder = FlaskSeeder()
+
     # This is a database model of student which holds id, name and age of a student
     class Student(db.Model):
         id = db.Column(db.Integer, primary_key=True)
@@ -30,9 +34,28 @@ def create_app():
 
     @app.route('/')
     def index():
+        seedStudents()
         # Getting all of the students records from the database
         students = Student.query.all()
         return render_template('index.html', students=students)
+    
+    def seedStudents():
+        db.session.query(Student).delete()
+        faker = Faker(
+            cls=Student,
+            init={
+                "id": generator.Sequence(),
+                "first_name": generator.Name(),
+                "last_name": generator.Name(),
+                "age": generator.Integer(start=18, end=100)
+            }
+        )
+        
+        # This is the code to create 5 users
+        for student in faker.create(10):
+            print("Adding student: %s" % student)
+            db.session.add(student)
+        db.session.commit()
     
     ## CRUD functions below
     # This is function to create new student with specified data

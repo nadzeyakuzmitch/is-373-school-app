@@ -1,5 +1,19 @@
 # Flask School Database App
 
+Used seeder library:
+[Flask Seeder](https://pypi.org/project/Flask-Seeder/)
+
+### 0. Install necessary libraries
+          
+```bash
+
+pip install Flask
+pip install flask-sqlalchemy
+pip install Flask-Migrate
+pip install Flask-Seeder
+
+```
+
 ### 1. Create DB instance
           
 ```bash
@@ -15,9 +29,9 @@ exit()
 
 ```bash
 
-flask db init
-flask db migrate -m "Initial migration"
-flask db upgrade
+python -m flask --app school-app db init
+python -m flask --app school-app db migrate -m "Initial migration"
+python -m flask --app school-app db upgrade
 
 ```
 
@@ -25,8 +39,8 @@ flask db upgrade
 
 ```bash
 
-flask db migrate -m "New migration"
-flask db upgrade
+python -m flask --app school-app db migrate -m "New migration"
+python -m flask --app school-app db upgrade
 
 ```
 
@@ -34,6 +48,10 @@ flask db upgrade
           
 ```bash
 
-flask --app school-app run
+python -m flask --app school-app run
 
 ```
+
+### 5. Navigate to see seeded list of students
+          
+[Localhost Page](http://127.0.0.1:5000/)
