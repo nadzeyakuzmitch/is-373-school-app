@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Students List</title>
+   </head>
+   <body>
+      <h3>Students</h3>
+      <br>
+      <table>
+         <thead>
+            <th>Student Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Age</th>
+         </thead>
+         {% for student in students %}
+         <tbody>
+            <td>{{student.id}}</td>
+            <td>{{student.first_name}}</td>
+            <td>{{student.last_name}}</td>
+            <td>{{student.age}}</td>
+         </tbody>
+         {% endfor%}
+      </table>
+   </body>
+</html>

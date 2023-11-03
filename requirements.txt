@@ -1,0 +1,8 @@
+click
+Flask
+Flask-Migrate
+flask-sqlalchemy
+itsdangerous
+Jinja2
+MarkupSafe=
+Werkzeug
