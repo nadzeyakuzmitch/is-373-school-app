@@ -1,8 +1,9 @@
-from flask import Flask, Blueprint, render_template
+from flask import Flask, Blueprint, render_template, request, redirect
 from flask_migrate import Migrate, migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_seeder import FlaskSeeder, Seeder, Faker, generator
 
+# Factory with models creation and seeder set up
 def create_app():
     app = Flask(__name__)
 
@@ -21,12 +22,12 @@ def create_app():
     # This initializes seeder for our app
     seeder = FlaskSeeder()
 
-    # This is a database model of student which holds id, name and age of a student
+    # This is a database model of student which holds id, name and age of a student; if changed need to create and run migration
     class Student(db.Model):
         id = db.Column(db.Integer, primary_key=True)
-        first_name = db.Column(db.String(20), unique=False, nullable=False)
-        last_name = db.Column(db.String(20), unique=False, nullable=False)
-        age = db.Column(db.Integer, nullable=False)
+        first_name = db.Column(db.String(20), unique=False)
+        last_name = db.Column(db.String(20), unique=False)
+        age = db.Column(db.Integer)
     
         # This is a method  that representing how records will look in the database
         def __repr__(self):
@@ -34,13 +35,23 @@ def create_app():
 
     @app.route('/')
     def index():
-        seedStudents()
-        # Getting all of the students records from the database
+        # Reading all of the students records from the database
         students = Student.query.all()
         return render_template('index.html', students=students)
     
-    def seedStudents():
+
+    # These functions are to seed students and it's API wrapper
+    @app.route('/seed', methods=["POST"])
+    def seedRequest():
+        count = request.form.get("count")
+        seedStudents(int(count))
+        return redirect('/')
+    
+    def seedStudents(count):
+        # Deleting old students first
         db.session.query(Student).delete()
+
+        # Model to seed based on
         faker = Faker(
             cls=Student,
             init={
@@ -51,11 +62,40 @@ def create_app():
             }
         )
         
-        # This is the code to create 5 users
-        for student in faker.create(10):
-            print("Adding student: %s" % student)
+        # This is the code to create students amount based on specified count
+        for student in faker.create(count):
             db.session.add(student)
         db.session.commit()
+
+    # API wrapper for create database function
+    @app.route('/create', methods=["POST"])
+    def createRequest():
+        first_name = request.form.get("first_name")
+        last_name = request.form.get("last_name")
+        age = request.form.get("age")
+    
+        if first_name != '' and last_name != '' and age is not None:
+            createStudent(first_name, last_name, age)
+            return redirect('/')
+        else:
+            return redirect('/')
+
+    # API wrapper for update and delete database functions
+    @app.route('/update', methods=["POST"])
+    def updateRequest():
+        action = request.form.get("submit")
+        id = request.form.get("id")
+
+        if action == "update":
+            first_name = request.form.get("first_name")
+            last_name = request.form.get("last_name")
+            age = request.form.get("age")
+            if first_name != '' and last_name != '' and age is not None:
+                updateStudent(id, first_name, last_name, age)
+        else:
+            deleteStudent(id)
+        
+        return redirect('/')
     
     ## CRUD functions below
     # This is function to create new student with specified data

@@ -1,25 +1,77 @@
-
 <!DOCTYPE html>
 <html>
-   <head>
-      <title>Students List</title>
-   </head>
-   <body>
-      <table border="1">
-         <thead>
-            <th>Student Id</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Age</th>
-         </thead>
-         {% for student in students %}
-         <tbody>
-            <td>{{student.id}}</td>
-            <td>{{student.first_name}}</td>
-            <td>{{student.last_name}}</td>
-            <td>{{student.age}}</td>
-         </tbody>
-         {% endfor%}
-      </table>
-   </body>
+
+<head>
+   <title>Students List</title>
+</head>
+
+<body>
+   <table border="1">
+      <thead>
+         <th>Student Id</th>
+         <th>First Name</th>
+         <th>Last Name</th>
+         <th>Age</th>
+         <th>Action</th>
+      </thead>
+
+      <!-- Iterated template for student items with update and delete functionality (based on the button you click)-->
+      {% for student in students %}
+      <tbody>
+         <form action="/update" method="POST">
+            <td>
+               {{student.id}}
+               <input style="display: none;" type="number" name="id" value="{{student.id}}">
+            </td>
+            <td>
+               <input type="text" name="first_name" placeholder="First name" value="{{student.first_name}}">
+            </td>
+            <td>
+               <input type="text" name="last_name" placeholder="Last name" value="{{student.last_name}}">
+            </td>
+            <td>
+               <input type="number" name="age" placeholder="Age" value="{{student.age}}">
+            </td>
+            <td>
+               <button name="submit" value="update">Update</button>
+               <button name="submit" value="delete">Delete</button>
+            </td>
+         </form>
+      </tbody>
+      {% endfor%}
+
+      <!-- Create form with button, makes create request to flask app -->
+      <tbody>
+         <form action="/create" method="POST">
+            <td>#</td>
+            <td>
+               <input type="text" name="first_name" placeholder="First name" value="">
+            </td>
+            <td>
+               <input type="text" name="last_name" placeholder="Last name" value="">
+            </td>
+            <td>
+               <input type="number" name="age" placeholder="Age" value="">
+            </td>
+            <td>
+               <button style="width: 100%;">Create</button>
+            </td>
+         </form>
+      </tbody>
+
+      <!-- Seed form with button, makes seed request to flask app -->
+      <tbody>
+         <form action="/seed" method="POST">
+            <td>#</td>
+            <td>
+               <input type="number" name="count" placeholder="Count" value="10">
+            </td>
+            <td colspan="3">
+               <button>Seed Students</button>
+            </td>
+         </form>
+      </tbody>
+   </table>
+</body>
+
 </html>

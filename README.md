@@ -26,7 +26,7 @@ exit()
 
 ```
 
-### 2. Initialize migrations
+### 2. Install and upgrade migrations
 
 ```bash
 
